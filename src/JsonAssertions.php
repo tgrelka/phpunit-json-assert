@@ -3,6 +3,7 @@ namespace Helmich\JsonAssert;
 
 use Helmich\JsonAssert\Constraint\JsonValueMatches;
 use Helmich\JsonAssert\Constraint\JsonValueMatchesMany;
+use Helmich\JsonAssert\Constraint\JsonValueMatchesManyDeep;
 use Helmich\JsonAssert\Constraint\JsonValueMatchesSchema;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -109,6 +110,22 @@ trait JsonAssertions
     public static function assertJsonDocumentMatches($jsonDocument, array $constraints)
     {
         Assert::assertThat($jsonDocument, new JsonValueMatchesMany($constraints));
+    }
+
+    /**
+     * Asserts that a JSON document matches an entire set of constraints, recursively expanding arrays.
+     *
+     * @param mixed $jsonDocument A JSON document. If this is a string, it will
+     *                            be assumed to be an encoded JSON document
+     * @param array $constraints  A set of constraints. This is a key-value map
+     *                            where each key is a JSON path expression,
+     *                            associated with a constraint that all values
+     *                            matched by that expression must fulfill.
+     * @return void
+     */
+    public static function assertJsonDocumentMatchesDeep($jsonDocument, array $constraints)
+    {
+        Assert::assertThat($jsonDocument, new JsonValueMatchesManyDeep($constraints));
     }
 
     /**
